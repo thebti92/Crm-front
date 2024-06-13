@@ -4,17 +4,11 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 
-export default function CartMenu({ cartItems, setCartItems, setIsCartOpen }) {
+export default function CartMenu({ cartItems, setCartItems, setIsCartOpen, userToken }) {
     const subtotal = cartItems.reduce((total, product) => total + (product.pricetax * product.quantity), 0);
     const navigate = useNavigate();
       // Function to handle the removal of items from the cart
 
-
-  const removeFromCart8 = (productId) => {
-    setCartItems((prevCartItems) => {
-      return prevCartItems.filter((item) => item.id !== productId);
-    });
-  };
 
   const removeFromCart = (productId) => {
     setCartItems((prevCartItems) => {
@@ -34,6 +28,8 @@ export default function CartMenu({ cartItems, setCartItems, setIsCartOpen }) {
   };
 
 
+
+  console.log("GGGGGGGGGGGG", userToken);
   return (
     <Transition.Root show={true} as={Fragment}>
       <Dialog className="relative z-20" onClose={() => setIsCartOpen(false)}>
@@ -129,6 +125,9 @@ export default function CartMenu({ cartItems, setCartItems, setIsCartOpen }) {
                         <p>{subtotal}</p>
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                      
+                     { userToken.name ? 
+                      
                       <div className="mt-6">
                         <a
                         //   href="#"
@@ -138,6 +137,24 @@ export default function CartMenu({ cartItems, setCartItems, setIsCartOpen }) {
                           Checkout
                         </a>
                       </div>
+                    :
+                    // <div class="mt-6">
+                    //         <button  onClick={ () => navigate('/login')} className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Connexion</button>
+                    // </div>
+
+                   <div className="mt-6">
+                      <a
+                 //   href="#"
+                      onClick={() => navigate('/login')}
+                      className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                      >
+                        Connexion
+                      </a>
+                   </div> 
+
+                    } 
+
+
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
                           or{' '}

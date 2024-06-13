@@ -694,7 +694,7 @@ export default function StoreNav({ cartItems, setCartItems , userToken, onSearch
       </header>
 
       
-      {isCartOpen && <CartMenu cartItems={cartItems} setCartItems={setCartItems} setIsCartOpen={setIsCartOpen} />}
+      {isCartOpen && <CartMenu cartItems={cartItems} setCartItems={setCartItems} setIsCartOpen={setIsCartOpen} userToken={userToken}/>}
     </div>
   )
 }

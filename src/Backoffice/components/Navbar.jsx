@@ -183,7 +183,7 @@ export default function PrimarySearchAppBar(userToken) {
       <AppBar position="fixed" elevation={0} sx={{ background: 'hwb(0 97% 2%)', color: "#2f2f2f" }}>
         <Toolbar>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1,  marginLeft: '4%'}}>
-            Welcome {userToken.userToken.userToken.name} !
+            Hi {userToken.userToken.userToken.name} !
           </Typography>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">

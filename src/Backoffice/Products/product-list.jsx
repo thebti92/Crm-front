@@ -617,7 +617,7 @@ const handleCloseModal = () => {
                     {/* <TableCell align="right">{row.promo ? row.promo+'%'  : ''}</TableCell> */}
 
                     <TableCell align="right">
-                         <Label  color={(row.promo && row.promo != 0 && 'success') }> {row.promo ? row.promo+'%'  : ''}</Label>
+                         <Label  color={(row.promo && row.promo > 0 && 'success') }> {row.promo ? row.promo+'%'  : ''}</Label>
                     </TableCell>
 
                     <TableCell align="right">{row.pricetax} {currency}</TableCell>

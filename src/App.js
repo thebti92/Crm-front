@@ -21,6 +21,7 @@ import CartMenu from "./Ecommerce/components/cart/Cart";
 import Checkout from "./Ecommerce/components/checkout/Checkout";
 import Home from "./Ecommerce/components/home/Home";
 import CategoryFil from "./Ecommerce/components/CategoryFil";
+import Profile from "./Ecommerce/components/Profile"
 
 import PrivateRoute from "./Backoffice/Login/PrivateRoute";
 
@@ -80,7 +81,7 @@ function App() {
           <Route path="products" element={<CategoryFil searchTerm={searchTerm} onSearch={setSearchTerm} />} />
           <Route path="/product/:productId" element={<ProductOverview cartItems={cartItems} setCartItems={setCartItems} />} />
           <Route path="/checkout" element={<Checkout cartItems={cartItems} setCartItems={setCartItems}  userToken={userToken} />} />
-          
+          <Route path="/profile" element={<Profile userToken={userToken}/>} />
           <Route path="/contact" element={<ContactPage userToken={userToken}/>} />
 
         </Route>

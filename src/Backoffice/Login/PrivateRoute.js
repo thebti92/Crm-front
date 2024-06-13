@@ -28,7 +28,11 @@ const PrivateRoute = ({userToken, setUserToken, allowedRoles }) => {
 
   const isAuthenticated = tokenTest != null;
   // Check if the user has one of the allowed roles
-  const hasRequiredRole = allowedRoles.includes(userTokenPrivate.role);
+  console.log("userTokenPrivate :", userTokenPrivate);
+ 
+
+  const hasRequiredRole = userTokenPrivate ? allowedRoles.includes(userTokenPrivate.role) : false;
+
 
   console.log("userToken Private Route: ", userToken.role);
   console.log("isAuthenticated: ", isAuthenticated);

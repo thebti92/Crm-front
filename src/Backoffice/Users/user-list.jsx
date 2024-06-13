@@ -584,28 +584,7 @@ const handleCloseModal = () => {
                 );
               })}
 
-        {/* ---------- MODAL OF ADDING USER ---------*/}
-        {/* <Modal
-             aria-labelledby="transition-modal-title"
-             aria-describedby="transition-modal-description"
-             open={open}
-             onClose={handleClose} 
-             closeAfterTransition
-             slots={{ backdrop: Backdrop }}
-             slotProps={{
-                 backdrop: {
-                 timeout: 500,
-                 },
-             }}
-          >
-                    <Fade in={open}>
-                       <Card sx={style}>
-                         <AddForm  closeEvent={handleClose}/>
-                       </Card>
-                    </Fade>
-         </Modal> */}
 
-        {/*-------------- END OF MODAL ---------*/}
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"

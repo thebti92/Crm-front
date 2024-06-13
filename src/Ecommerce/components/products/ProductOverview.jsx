@@ -4,6 +4,10 @@ import axios from 'axios';
 import { StarIcon } from '@heroicons/react/20/solid';
 import { RadioGroup } from '@headlessui/react';
 
+//import Label from "../components/label"
+import Label from "../../../Backoffice/components/label"
+import toast from 'react-hot-toast';
+
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const currency = process.env.REACT_APP_CURRENCY;
 
@@ -49,9 +53,14 @@ export default function ProductOverview({ cartItems, setCartItems }) {
   }
 
   const addToCart = () => {
+
+  if (product.stock > 0) {
+    if (quantity <= product.stock){
+    
     console.log("AddToCart ...");
     const newItem = {
       id: `${product._id}-${Date.now()}`, // Combine product ID with timestamp
+      idProduct : product._id,
       name: product.name,
       imageSrc: product.img,
       color: selectedColor,
@@ -62,8 +71,15 @@ export default function ProductOverview({ cartItems, setCartItems }) {
     };
     setCartItems([...cartItems, newItem]);
     localStorage.setItem('cartItems', JSON.stringify([...cartItems, newItem]));
+  } else {
+    toast.error("The quantity you have requested exceeds our current stock");
+  }
 
-    // You can also store the cart items in localStorage or send them to the server here
+  } else {
+    toast.error("This product is out of stock");
+  }
+    
+
   };
 
   const reviews = { href: '#', average: 4, totalCount: 117 }; // Sample reviews data
@@ -104,38 +120,13 @@ export default function ProductOverview({ cartItems, setCartItems }) {
 
         {/* Image gallery */}
         {/* <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8"> */}
-        <div className="mx-auto max-w-2xl sm:px-6 lg:grid lg:max-w-3xl  lg:gap-x-8 lg:px-8">
+        <div className="mx-auto max-w-xl sm:px-6 lg:grid lg:max-w-xl lg:px-8">
          
-          {/* <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
+          <div className="aspect-h-5 aspect-w-4 lg:aspect-h-3 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg ">
             <img
               src={product.img}
               alt={product.name}
-              className="h-full w-full object-cover object-center"
-            />
-          </div> */}
-{/* 
-          <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-            <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-              <img
-                src={product.img}
-                alt={product.name}
-                className="h-full w-full object-cover object-center"
-              />
-            </div>
-            <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-              <img
-                src={product.img}
-                alt={product.name}
-                className="h-full w-full object-cover object-center"
-              />
-            </div>
-          </div>
-           */}
-          <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-            <img
-              src={product.img}
-              alt={product.name}
-              className="h-full w-full object-cover object-center"
+              className="object-cover object-center"
             />
           </div>
         </div>
@@ -253,9 +244,15 @@ export default function ProductOverview({ cartItems, setCartItems }) {
   </div>
 </RadioGroup>
 </div>
+
+
+           <div className="mt-10">
+           <Label  color={(product.stock > 0 && 'success') || 'error'}>{product.stock > 0  ? 'In Stock' : 'Out of Stock'}</Label>
+
+           </div>
             
 
-<div className="mt-10">
+<div className="mt-2">
   <label htmlFor="quantity" className="text-sm font-medium text-gray-900">Quantity</label>  
    <br />
   <div className="flex ml-2">

@@ -11,7 +11,7 @@ export default function Checkout({ cartItems, userToken , setCartItems}) {
     const [name, setName] = useState(userToken?.name || '');
     const [shippingAddress, setShippingAddress] = useState('');
     const [city, setCity] = useState('');
-    const [region, setRegion] = useState('');
+    // const [region, setRegion] = useState('');
     const [postalCode, setPostalCode] = useState('');
     const [phone, setPhone] = useState(userToken?.phone || '');
     const [email, setEmail] = useState(userToken?.email || '');
@@ -39,7 +39,7 @@ export default function Checkout({ cartItems, userToken , setCartItems}) {
                 customer_id: name,
                 status: 'pending',
                 total_amount: subtotal,
-                shipping_address: shippingAddress,
+                shipping_address: shippingAddress +", " + city + ", " + postalCode,
              //   city,
              //   region,
             //    postalCode,
@@ -50,32 +50,15 @@ export default function Checkout({ cartItems, userToken , setCartItems}) {
                 
             };
 
-
-            // const response = await fetch(`${BASE_URL}/api/orders/addOrder`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(orderData)
-            // });
-
-            // if (response.ok) {
-            //     console.log('Order placed successfully!');
-            //     toast.success('Order added successfully');
-
-            // //    navigate('/');
-
-            // } else {
-            //     console.error('Failed to place order:', response.statusText);
-            // }
-
-
-
              // Add new user
              const response = await axios.post(`${BASE_URL}/api/orders/addOrder`,  orderData);
              if (response.status === 201) {
                 console.log('Order placed successfully!'); 
                 toast.success('Order placed successfully!');
+               
+                // Update product stock
+                await updateProductStock(cartItems);
+
                 setCartItems([]);
                 localStorage.removeItem('cartItems');
                 navigate('/');
@@ -95,6 +78,22 @@ export default function Checkout({ cartItems, userToken , setCartItems}) {
             toast.error(error.response.data.message);
         }
     };
+
+    const updateProductStock = async (cartItems) => {
+        try {
+            const updateStockPromises = cartItems.map(item =>
+                axios.post(`${BASE_URL}/api/products/updateStock`, {
+                    productId: item.idProduct,
+                    quantity: item.quantity,
+                })
+            );
+            await Promise.all(updateStockPromises);
+            console.log('Stock updated successfully!');
+        } catch (error) {
+            console.error('Error updating stock:', error.message);
+            toast.error('Error updating stock');
+        }
+    }
 
     return (
         <div className="container mx-auto p-4">
@@ -198,7 +197,7 @@ export default function Checkout({ cartItems, userToken , setCartItems}) {
                                 required
                             />
                         </div>
-                        <div className="mb-4">
+                        {/* <div className="mb-4">
                             <label htmlFor="region" className="block text-sm font-medium text-gray-700">
                                 Région / Département
                             </label>
@@ -210,7 +209,7 @@ export default function Checkout({ cartItems, userToken , setCartItems}) {
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 required
                             />
-                        </div>
+                        </div> */}
                         <div className="mb-4">
                             <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">
                                 Code postal
@@ -281,12 +280,22 @@ export default function Checkout({ cartItems, userToken , setCartItems}) {
                                 </label>
                             </div>
                         </div>
+                        
+                    {userToken.name ? 
+
                         <button
                             type="submit"
                             className="w-full flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                             Place Order
                         </button>
+                    :
+                    <div class="text-center">
+                            <button  onClick={ () => navigate('/login')} class="w-full flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Connexion</button>
+                    </div>
+
+                    }
+
                     </form>
                 </div>
             </div>
